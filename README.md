@@ -18,7 +18,7 @@ November 2025 was 2.3% lower than November 2024. That was the first month below 
 
 The 2020 lockdown is easy to spot: April 2020 collections were ₹18,974 crore against ₹75,674 crore in February 2020, 77% below April 2019.
 
-Collections are getting more concentrated, not less. The top 5 states had 52.2% of the total in 2018-19 and 55.6% in 2025-26. Maharashtra alone went from 20.1% to 22.2%. Karnataka moved past Gujarat into second place.
+The big states' share is growing. The top 5 states had 52.2% of the total in 2018-19 and 55.6% in 2025-26. Maharashtra alone went from 20.1% to 22.2%. Karnataka moved past Gujarat into second place.
 
 ![States](screenshots/states.png)
 
@@ -49,29 +49,11 @@ All the cleaning is in Power Query: `fnReadYear` reads one file and `gst` combin
 
 ## Model and measures
 
-It's a star schema with one fact table and three dimensions:
+`gst` has one row per state, month and tax head. It links to `states` (name, zone, state or UT), `tax_heads`, and a DAX `Calendar` table with April-to-March financial year columns, marked as the date table.
 
-- `gst`: month, state code, tax head, amount (₹ crore)
-- `states`: state, zone, state or UT
-- `tax_heads`: CGST, SGST, IGST
-- `Calendar`: a daily DAX calendar with financial year (April to March) columns, marked as the date table
+`GST (Cr)` is a plain SUM, and the other measures build on it. `Share of India` divides by the same total with the state filter removed. `YoY %` uses `SAMEPERIODLASTYEAR`. Because the calendar ends in September 2026, 2026-27 is compared April-September with April-September. It is left blank when the earlier period has fewer months of data, or when last year's figure is almost zero, so 2018-19 has no growth figure. `Top 5 Share` adds up the five largest states with `TOPN`, and `Growth vs FY 2018-19` swaps the year filter for 2018-19 to get the base.
 
-There are 14 measures. The main ones:
-
-- `GST (Cr)`: the total, and `Share of India` for a state's share
-- `YoY %`: against the same months a year earlier, using `SAMEPERIODLASTYEAR`. Because the calendar stops at September 2026, picking 2026-27 compares April-September with April-September. It returns blank when the year before has fewer months of data, so 2018-19 shows no growth figure (2017-18 only has July to March).
-- `FYTD (Cr)` with `TOTALYTD` and a 31 March year end, `FYTD YoY %`, and `MoM %` with `DATEADD`. These three show in the tooltip of the monthly chart on the Overview page.
-- `Rolling 12M (Lakh Cr)` and `3M Avg (Lakh Cr)` with `DATESINPERIOD`
-- `State Rank` with `RANKX` over the selected states, and `Top 5 Share` with `TOPN`
-- `Growth vs FY 2018-19`
-
-## The dashboard
-
-- Overview: cards for the selected year (collection, growth, top 5 share, average per month), the monthly trend with a 3-month average and the yearly totals.
-- Trend: growth against the same month last year, the rolling 12-month total, the tax head split and a year-by-year table. A state and a tax head can be picked.
-- States: the top 15 states and a table of all states with rank, share and growth, with year and zone slicers. Hovering over a bar shows a tooltip page with that state's monthly trend.
-
-The page buttons at the top switch between pages.
+The Overview page has the yearly and monthly totals. Growth by state and tax head is on the Trend page, and the States page ranks every state for the year picked.
 
 ## Files
 
@@ -89,6 +71,6 @@ These are collections by the state where tax was paid, before IGST is settled be
 
 The figures are provisional, as the files themselves say, and 2026-27 only runs to September. Leaving cess out means my totals are lower than the gross GST figures in the news.
 
-The dip in late 2025 lines up with the rate cuts, but I haven't controlled for anything else, so I'd treat that as a timing match, not a cause.
+The late-2025 dip only lines up with the rate cuts in time. I haven't checked other causes such as refunds or changes in compliance.
 
 Tools: Power BI Desktop, Power Query (M), DAX, Python (pandas) for checking
