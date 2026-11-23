@@ -1,0 +1,12 @@
+relationship gst_calendar
+	fromColumn: gst.month
+	toColumn: Calendar.Date
+
+relationship gst_states
+	fromColumn: gst.state_code
+	toColumn: states.state_code
+
+relationship gst_tax_heads
+	fromColumn: gst.tax_head
+	toColumn: tax_heads.tax_head
+

@@ -1,0 +1,99 @@
+table Calendar
+	lineageTag: caf71bc4-4274-4251-b399-ac80d413fbf6
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		isKey
+		formatString: dd mmm yyyy
+		lineageTag: 5c27d433-aa60-47cb-98c3-82f8ef565a77
+		summarizeBy: none
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthStart
+		dataType: dateTime
+		formatString: mmm yyyy
+		lineageTag: 05daa0e9-5c52-4610-b490-e34f9589c353
+		summarizeBy: none
+		sourceColumn: [MonthStart]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: string
+		lineageTag: 24146f0f-d09a-4ed7-a021-2565e731bb5a
+		summarizeBy: none
+		sourceColumn: [Month]
+		sortByColumn: MonthKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 242794ef-3fab-4fb3-9856-cf1182891f82
+		summarizeBy: none
+		sourceColumn: [MonthKey]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthName
+		dataType: string
+		lineageTag: b5dfbd61-9e0c-4a2f-a46e-80e4415073dc
+		summarizeBy: none
+		sourceColumn: [MonthName]
+		sortByColumn: FYMonthNo
+
+		annotation SummarizationSetBy = Automatic
+
+	column FYMonthNo
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 5a16196a-d3cf-4a68-a523-7959d3f3e87d
+		summarizeBy: none
+		sourceColumn: [FYMonthNo]
+
+		annotation SummarizationSetBy = Automatic
+
+	column FY
+		dataType: string
+		lineageTag: 48290e5f-fee5-40e5-9d9c-d1b84c75457d
+		summarizeBy: none
+		sourceColumn: [FY]
+		sortByColumn: FYKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column FYKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: df29417e-7364-4d51-9109-35026fc78cf2
+		summarizeBy: none
+		sourceColumn: [FYKey]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calendar = calculated
+		mode: import
+		source =
+				VAR first = MIN ( gst[month] )
+				VAR last = EOMONTH ( MAX ( gst[month] ), 0 )
+				RETURN
+				    ADDCOLUMNS (
+				        CALENDAR ( first, last ),
+				        "MonthStart", DATE ( YEAR ( [Date] ), MONTH ( [Date] ), 1 ),
+				        "Month", FORMAT ( [Date], "MMM yy" ),
+				        "MonthKey", YEAR ( [Date] ) * 100 + MONTH ( [Date] ),
+				        "MonthName", FORMAT ( [Date], "MMM" ),
+				        "FYMonthNo", MOD ( MONTH ( [Date] ) - 4, 12 ) + 1,
+				        "FYKey", IF ( MONTH ( [Date] ) >= 4, YEAR ( [Date] ), YEAR ( [Date] ) - 1 ),
+				        "FY",
+				            VAR y = IF ( MONTH ( [Date] ) >= 4, YEAR ( [Date] ), YEAR ( [Date] ) - 1 )
+				            RETURN y & "-" & RIGHT ( y + 1, 2 )
+				    )
+

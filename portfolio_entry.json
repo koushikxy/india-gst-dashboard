@@ -1,0 +1,7 @@
+{
+  "title": "India's GST collections by state",
+  "description": "Power BI dashboard of state-wise GST collections, 2017 to 2026",
+  "tools": "Power BI, Power Query, DAX",
+  "slug": "india-gst-dashboard",
+  "cover": "screenshots/cover.png"
+}

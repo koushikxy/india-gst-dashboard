@@ -1,0 +1,41 @@
+{
+  "name": "GST Ledger",
+  "dataColors": [
+    "#0E8A6E",
+    "#1F5FA8",
+    "#C77A0A",
+    "#7A4E9C",
+    "#B5523B",
+    "#4F7F2F",
+    "#8A8F98",
+    "#2B8CBE"
+  ],
+  "background": "#FFFFFF",
+  "foreground": "#1B2733",
+  "tableAccent": "#0E8A6E",
+  "good": "#2E7D32",
+  "neutral": "#C77A0A",
+  "bad": "#B5523B",
+  "textClasses": {
+    "title": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 13,
+      "color": "#1B2733"
+    },
+    "header": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 12,
+      "color": "#1B2733"
+    },
+    "label": {
+      "fontFace": "Segoe UI",
+      "fontSize": 10,
+      "color": "#5B6672"
+    },
+    "callout": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 28,
+      "color": "#1B2733"
+    }
+  }
+}

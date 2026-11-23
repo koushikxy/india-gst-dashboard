@@ -1,0 +1,40 @@
+state_code,state,zone,state_type
+1,Jammu and Kashmir,Northern,UT
+2,Himachal Pradesh,Northern,State
+3,Punjab,Northern,State
+4,Chandigarh,Northern,UT
+5,Uttarakhand,Central,State
+6,Haryana,Northern,State
+7,Delhi,Northern,UT
+8,Rajasthan,Northern,State
+9,Uttar Pradesh,Central,State
+10,Bihar,Eastern,State
+11,Sikkim,North Eastern,State
+12,Arunachal Pradesh,North Eastern,State
+13,Nagaland,North Eastern,State
+14,Manipur,North Eastern,State
+15,Mizoram,North Eastern,State
+16,Tripura,North Eastern,State
+17,Meghalaya,North Eastern,State
+18,Assam,North Eastern,State
+19,West Bengal,Eastern,State
+20,Jharkhand,Eastern,State
+21,Odisha,Eastern,State
+22,Chhattisgarh,Central,State
+23,Madhya Pradesh,Central,State
+24,Gujarat,Western,State
+25,Dadra and Nagar Haveli and Daman and Diu,Western,UT
+26,Dadra and Nagar Haveli and Daman and Diu,Western,UT
+27,Maharashtra,Western,State
+29,Karnataka,Southern,State
+30,Goa,Western,State
+31,Lakshadweep,Southern,UT
+32,Kerala,Southern,State
+33,Tamil Nadu,Southern,State
+34,Puducherry,Southern,UT
+35,Andaman and Nicobar Islands,Eastern,UT
+36,Telangana,Southern,State
+37,Andhra Pradesh,Southern,State
+38,Ladakh,Northern,UT
+97,Other Territory,Other,Other
+99,Centre (OIDAR),Other,Other

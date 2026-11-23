@@ -1,0 +1,9 @@
+{
+  "name": "India GST Collections Dashboard",
+  "tech": "Power BI, Power Query (M), DAX",
+  "bullets": [
+    "Combined 10 yearly GST portal Excel files with changing layouts (merged month headers, 5 vs 4 tax columns, text state codes) into a 12,849-row fact table using a Power Query function",
+    "Built a star schema (fact, state, tax head, daily calendar) and 14 DAX measures including YoY, FYTD, rolling 12-month, RANKX and top-5 share, checked against a pandas recount",
+    "Found collections doubled to ₹16.32 lakh crore in 2025-26 while yearly growth slowed from 26.9% to 6.4%, and the top 5 states' share rose from 52.2% to 55.6%"
+  ]
+}

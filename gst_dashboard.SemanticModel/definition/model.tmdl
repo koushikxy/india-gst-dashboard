@@ -1,0 +1,21 @@
+model Model
+	culture: en-GB
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["DataFolder","fnReadYear","gst","states","tax_heads"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table gst
+ref table states
+ref table tax_heads
+ref table Calendar
+
+ref cultureInfo en-GB
+

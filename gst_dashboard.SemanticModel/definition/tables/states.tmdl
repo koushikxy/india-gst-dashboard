@@ -1,0 +1,50 @@
+table states
+	lineageTag: 253c6c09-89f6-40f2-8e58-3632476eed6c
+
+	column state_code
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 8618495f-e213-4fc7-8117-2fc59a8169cb
+		summarizeBy: none
+		sourceColumn: state_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column state
+		dataType: string
+		lineageTag: 7ce0ab21-43d6-46ef-bd9c-04bba9e2167c
+		dataCategory: StateOrProvince
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column zone
+		dataType: string
+		lineageTag: dab5aca6-3d8e-4f72-b4fe-dcd2574deec6
+		summarizeBy: none
+		sourceColumn: zone
+
+		annotation SummarizationSetBy = Automatic
+
+	column state_type
+		dataType: string
+		lineageTag: cc147d09-ba72-4195-80cf-876f140ee066
+		summarizeBy: none
+		sourceColumn: state_type
+
+		annotation SummarizationSetBy = Automatic
+
+	partition states = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\states.csv"), [Delimiter = ",", Encoding = 65001]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"state_code", Int64.Type}, {"state", type text}, {"zone", type text}, {"state_type", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

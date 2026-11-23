@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "9c46ecf4b2ddf7b65101",
+  "position": {
+    "x": 310,
+    "y": 122,
+    "z": 3,
+    "height": 50,
+    "width": 900,
+    "tabOrder": 3
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Cards follow the year picked on the left. The two charts below always show every year. FY 2017-18 starts in July 2017 and FY 2026-27 runs only to September 2026, so compare those with care.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#5B6672"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

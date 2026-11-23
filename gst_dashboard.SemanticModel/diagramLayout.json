@@ -1,0 +1,74 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 568.32775153564648,
+            "y": 532.61605039079063
+          },
+          "nodeIndex": "Calendar",
+          "nodeLineageTag": "3c215cf8-7e52-4a03-9319-a05679751b5f",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 335.73677011186794,
+            "y": 179.07983037212279
+          },
+          "nodeIndex": "gst",
+          "nodeLineageTag": "ae5ca339-b0ed-4a0a-89e5-1117a8977c9d",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": 128.63731553612661
+          },
+          "nodeIndex": "states",
+          "nodeLineageTag": "41b1f012-124f-4930-9c97-f0f5d0183802",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 447.45299248101247,
+            "y": -50
+          },
+          "nodeIndex": "tax_heads",
+          "nodeLineageTag": "3350cb84-d03c-4e79-9985-d49078b84243",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

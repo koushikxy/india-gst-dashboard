@@ -1,0 +1,55 @@
+table tax_heads
+	lineageTag: 404bf69a-abdd-44a0-bf3c-d732f0194db9
+
+	column tax_head
+		dataType: string
+		lineageTag: 6c93a43f-0cfd-4200-bcf6-b57fc18d8c46
+		summarizeBy: none
+		sourceColumn: tax_head
+		sortByColumn: head_order
+
+		annotation SummarizationSetBy = Automatic
+
+	column tax_name
+		dataType: string
+		lineageTag: 91cdb460-0811-4d3a-8e53-ae74cd2e0468
+		summarizeBy: none
+		sourceColumn: tax_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column goes_to
+		dataType: string
+		lineageTag: 7f86c64c-4293-446b-9b71-343fc6732027
+		summarizeBy: none
+		sourceColumn: goes_to
+
+		annotation SummarizationSetBy = Automatic
+
+	column head_order
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 53b95c1e-dbeb-4045-88ab-b9e0e80d43a5
+		summarizeBy: none
+		sourceColumn: head_order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition tax_heads = m
+		mode: import
+		source =
+				let
+				    Source = #table(
+				        type table [tax_head = text, tax_name = text, goes_to = text, head_order = Int64.Type],
+				        {
+				            {"CGST", "Central GST", "Centre", 1},
+				            {"SGST", "State GST", "State", 2},
+				            {"IGST", "Integrated GST", "Split after settlement", 3}
+				        }
+				    )
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,164 @@
+{
+  "fact_rows": {
+    "value": 12849,
+    "how": "len(df) after keeping CGST, SGST, IGST cells with a number; Power BI COUNTROWS(gst)"
+  },
+  "max_gap_components_vs_total_cr": {
+    "value": 0.0,
+    "how": "abs(CGST+SGST+IGST+CESS - TOTAL) per state-month, max"
+  },
+  "fy_2018_19_lakh_cr": {
+    "value": 7.89,
+    "how": "fy['2018-19'] / 1e5; [GST (Lakh Cr)] for FY 2018-19"
+  },
+  "fy_2025_26_lakh_cr": {
+    "value": 16.32,
+    "how": "fy['2025-26'] / 1e5; [GST (Lakh Cr)] for FY 2025-26"
+  },
+  "growth_fy19_to_fy26": {
+    "value": 1.0669,
+    "how": "fy['2025-26'] / fy['2018-19'] - 1"
+  },
+  "fy_yoy": {
+    "value": {
+      "2019-20": 0.0844,
+      "2020-21": -0.0811,
+      "2021-22": 0.2695,
+      "2022-23": 0.2092,
+      "2023-24": 0.1516,
+      "2024-25": 0.103,
+      "2025-26": 0.0639
+    },
+    "how": "fy.pct_change(); [YoY %] by FY. 2018-19 is left blank because 2017-18 has only 9 months"
+  },
+  "h1_2026_27_yoy": {
+    "value": 0.0605,
+    "how": "Apr-Sep 2026 vs Apr-Sep 2025; [YoY %] / [FYTD YoY %] for FY 2026-27"
+  },
+  "monthly_avg_2025_26_cr": {
+    "value": 135981,
+    "how": "fy['2025-26'] / 12; [Monthly Avg (Cr)]"
+  },
+  "top5_share_2018_19": {
+    "value": 0.5215,
+    "how": "top 5 states / all; [Top 5 Share]"
+  },
+  "top5_share_2025_26": {
+    "value": 0.5557,
+    "how": "top 5 states / all; [Top 5 Share]"
+  },
+  "maharashtra_share_2018_19": {
+    "value": 0.2012,
+    "how": "[Share of India] for Maharashtra"
+  },
+  "maharashtra_share_2025_26": {
+    "value": 0.2217,
+    "how": "[Share of India] for Maharashtra"
+  },
+  "top5_states_2025_26": {
+    "value": [
+      "Maharashtra",
+      "Karnataka",
+      "Gujarat",
+      "Tamil Nadu",
+      "Haryana"
+    ],
+    "how": "[State Rank] 1-5"
+  },
+  "growth_vs_2018_19_big15": {
+    "value": {
+      "Andhra Pradesh": 0.6919,
+      "West Bengal": 0.8179,
+      "Chhattisgarh": 0.8311,
+      "Rajasthan": 0.8449,
+      "Madhya Pradesh": 0.8803,
+      "Gujarat": 0.9494,
+      "Telangana": 1.034,
+      "Uttar Pradesh": 1.0367,
+      "Tamil Nadu": 1.0546,
+      "Delhi": 1.0743,
+      "Kerala": 1.2081,
+      "Maharashtra": 1.2775,
+      "Karnataka": 1.3036,
+      "Haryana": 1.3582,
+      "Odisha": 1.4134
+    },
+    "how": "st['2025-26'] / st['2018-19'] - 1; [Growth vs FY 2018-19]"
+  },
+  "apr_2020_cr": {
+    "value": 18974,
+    "how": "monthly total April 2020"
+  },
+  "feb_2020_cr": {
+    "value": 75674,
+    "how": "monthly total February 2020"
+  },
+  "apr_2020_yoy": {
+    "value": -0.7669,
+    "how": "[YoY %] April 2020"
+  },
+  "apr_2021_yoy": {
+    "value": 4.3938,
+    "how": "[YoY %] April 2021"
+  },
+  "nov_2025_yoy": {
+    "value": -0.0234,
+    "how": "[YoY %] November 2025"
+  },
+  "negative_yoy_months_since_2021": {
+    "value": [
+      "2021-06-01",
+      "2025-11-01",
+      "2026-05-01"
+    ],
+    "how": "months where [YoY %] is below zero"
+  },
+  "may_2026_yoy": {
+    "value": -0.0259,
+    "how": "[YoY %] May 2026"
+  },
+  "jul_to_sep_2026_yoy": {
+    "value": {
+      "2026-07-01": 0.1008,
+      "2026-08-01": 0.093,
+      "2026-09-01": 0.101
+    },
+    "how": "[YoY %] July-September 2026"
+  },
+  "sep_2026_cr": {
+    "value": 137996,
+    "how": "[GST (Cr)] September 2026"
+  },
+  "sep_2026_mom": {
+    "value": 0.0054,
+    "how": "[MoM %] September 2026"
+  },
+  "rolling_12m_sep_2026_lakh_cr": {
+    "value": 16.8167,
+    "how": "[Rolling 12M (Lakh Cr)] at September 2026"
+  },
+  "avg_3m_sep_2026_lakh_cr": {
+    "value": 1.3998,
+    "how": "[3M Avg (Lakh Cr)] at September 2026"
+  },
+  "fytd_sep_2026_cr": {
+    "value": 874366,
+    "how": "[FYTD (Cr)] at September 2026"
+  },
+  "fytd_aug_2025_yoy": {
+    "value": 0.0987,
+    "how": "[FYTD YoY %] at August 2025"
+  },
+  "igst_share_2025_26": {
+    "value": 0.3899,
+    "how": "IGST / all heads, FY 2025-26"
+  },
+  "sgst_share_2025_26": {
+    "value": 0.3379,
+    "how": "SGST / all heads, FY 2025-26"
+  },
+  "cgst_share_2025_26": {
+    "value": 0.2723,
+    "how": "CGST / all heads, FY 2025-26"
+  }
+}

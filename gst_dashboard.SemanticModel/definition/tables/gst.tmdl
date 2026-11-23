@@ -1,0 +1,139 @@
+table gst
+	lineageTag: 285bab8e-1f8e-4221-80ad-56e35abf7fb6
+
+	measure 'GST (Cr)' = SUM ( gst[amount_cr] )
+		formatString: #,0
+		lineageTag: 63394ec3-dad2-47e9-ac71-4e25ea4d92e8
+
+	measure 'GST (Lakh Cr)' = DIVIDE ( [GST (Cr)], 100000 )
+		formatString: #,0.00
+		lineageTag: caf07cb4-7a4e-40c4-878c-92b57f2bc1e3
+
+	measure 'Share of India' = DIVIDE ( [GST (Cr)], CALCULATE ( [GST (Cr)], REMOVEFILTERS ( states ) ) )
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: d09b534f-97ee-4da9-a632-70b6d7a305c6
+
+	measure 'GST LY (Cr)' = CALCULATE ( [GST (Cr)], SAMEPERIODLASTYEAR ( 'Calendar'[Date] ) )
+		formatString: #,0
+		lineageTag: 44276ab1-f000-42a5-8e11-e7ce57e1266d
+
+	measure 'YoY %' =
+			VAR months = CALCULATE ( DISTINCTCOUNT ( gst[month] ), REMOVEFILTERS ( tax_heads ) )
+			VAR monthsLY = CALCULATE ( DISTINCTCOUNT ( gst[month] ), REMOVEFILTERS ( tax_heads ), SAMEPERIODLASTYEAR ( 'Calendar'[Date] ) )
+			RETURN
+			    IF ( monthsLY < months || [GST LY (Cr)] < 0.01 * [GST (Cr)], BLANK (), DIVIDE ( [GST (Cr)] - [GST LY (Cr)], [GST LY (Cr)] ) )
+		formatString: +0.0%;-0.0%;0.0%
+		lineageTag: a535e09b-14a3-4c2f-b541-065fd89ddb00
+
+	measure 'MoM %' =
+			VAR prev = CALCULATE ( [GST (Cr)], DATEADD ( 'Calendar'[Date], -1, MONTH ) )
+			RETURN
+			    DIVIDE ( [GST (Cr)] - prev, prev )
+		formatString: +0.0%;-0.0%;0.0%
+		lineageTag: 41831740-ebc9-4293-974e-e8a055b586d9
+
+	measure 'FYTD (Cr)' = TOTALYTD ( [GST (Cr)], 'Calendar'[Date], "3/31" )
+		formatString: #,0
+		lineageTag: ddd567c9-6f3e-4e31-93bf-98b08884df3f
+
+	measure 'FYTD YoY %' =
+			VAR ly = CALCULATE ( [FYTD (Cr)], SAMEPERIODLASTYEAR ( 'Calendar'[Date] ) )
+			VAR months = CALCULATE ( DISTINCTCOUNT ( gst[month] ), REMOVEFILTERS ( tax_heads ), DATESYTD ( 'Calendar'[Date], "3/31" ) )
+			VAR monthsLY =
+			    CALCULATE (
+			        CALCULATE ( DISTINCTCOUNT ( gst[month] ), REMOVEFILTERS ( tax_heads ), DATESYTD ( 'Calendar'[Date], "3/31" ) ),
+			        SAMEPERIODLASTYEAR ( 'Calendar'[Date] )
+			    )
+			RETURN
+			    IF ( monthsLY < months || ly < 0.01 * [FYTD (Cr)], BLANK (), DIVIDE ( [FYTD (Cr)] - ly, ly ) )
+		formatString: +0.0%;-0.0%;0.0%
+		lineageTag: 1ad199b2-6886-480f-bb79-ea42fd6b1a70
+
+	measure 'Rolling 12M (Lakh Cr)' = CALCULATE ( [GST (Lakh Cr)], DATESINPERIOD ( 'Calendar'[Date], MAX ( 'Calendar'[Date] ), -12, MONTH ) )
+		formatString: #,0.00
+		lineageTag: 5407c5d7-c3ef-4915-bbff-6c7f614f1a55
+
+	measure '3M Avg (Lakh Cr)' =
+			CALCULATE (
+			    AVERAGEX ( VALUES ( 'Calendar'[MonthStart] ), [GST (Lakh Cr)] ),
+			    DATESINPERIOD ( 'Calendar'[Date], MAX ( 'Calendar'[Date] ), -3, MONTH )
+			)
+		formatString: #,0.00
+		lineageTag: 0ef169d6-c0af-41a4-8659-a8218ba8923b
+
+	measure 'Monthly Avg (Cr)' = AVERAGEX ( VALUES ( 'Calendar'[MonthStart] ), [GST (Cr)] )
+		formatString: #,0
+		lineageTag: aaaaf9c1-33da-4596-9f0d-695a33017ccc
+
+	measure 'State Rank' = IF ( ISINSCOPE ( states[state] ), RANKX ( ALLSELECTED ( states[state] ), [GST (Cr)] ) )
+		formatString: 0
+		lineageTag: 9d0ba2e8-1137-41e2-8794-cf4ce00edbb0
+
+	measure 'Top 5 Share' =
+			DIVIDE (
+			    SUMX ( TOPN ( 5, ALL ( states[state] ), [GST (Cr)] ), [GST (Cr)] ),
+			    CALCULATE ( [GST (Cr)], REMOVEFILTERS ( states ) )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: caab2abd-74df-479a-8f86-ad81e403f3f4
+
+	measure 'Growth vs FY 2018-19' =
+			VAR base = CALCULATE ( [GST (Cr)], REMOVEFILTERS ( 'Calendar' ), 'Calendar'[FY] = "2018-19" )
+			RETURN
+			    DIVIDE ( [GST (Cr)] - base, base )
+		formatString: +0%;-0%;0%
+		lineageTag: bd6a6094-3131-49e4-a9d8-22c81ec56047
+
+	column month
+		dataType: dateTime
+		formatString: mmm yyyy
+		lineageTag: 9f25cdb5-8fd1-4efc-b1e0-8436d0b6ae62
+		summarizeBy: none
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column state_code
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: c8aac329-fe9d-4f25-8473-e469ec31b3f8
+		summarizeBy: none
+		sourceColumn: state_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column tax_head
+		dataType: string
+		isHidden
+		lineageTag: 698f4080-34cd-4c88-ae54-3ef095dd8ae4
+		summarizeBy: none
+		sourceColumn: tax_head
+
+		annotation SummarizationSetBy = Automatic
+
+	column amount_cr
+		dataType: double
+		formatString: #,0
+		lineageTag: d9e85877-2b64-49df-aea0-136e62a68919
+		summarizeBy: sum
+		sourceColumn: amount_cr
+
+		annotation SummarizationSetBy = Automatic
+
+	partition gst = m
+		mode: import
+		source =
+				let
+				    Source = Folder.Files(DataFolder),
+				    Files = Table.SelectRows(Source, each Text.StartsWith([Name], "statewise_GST_collection_") and [Extension] = ".xlsx"),
+				    Read = Table.AddColumn(Files, "rows", each fnReadYear([Content])),
+				    Combined = Table.Combine(Read[rows]),
+				    Typed = Table.TransformColumnTypes(Combined, {{"month", type date}, {"state_code", Int64.Type}, {"tax_head", type text}, {"amount_cr", type number}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

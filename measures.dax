@@ -1,0 +1,79 @@
+Calendar =
+VAR first = MIN ( gst[month] )
+VAR last = EOMONTH ( MAX ( gst[month] ), 0 )
+RETURN
+    ADDCOLUMNS (
+        CALENDAR ( first, last ),
+        "MonthStart", DATE ( YEAR ( [Date] ), MONTH ( [Date] ), 1 ),
+        "Month", FORMAT ( [Date], "MMM yy" ),
+        "MonthKey", YEAR ( [Date] ) * 100 + MONTH ( [Date] ),
+        "MonthName", FORMAT ( [Date], "MMM" ),
+        "FYMonthNo", MOD ( MONTH ( [Date] ) - 4, 12 ) + 1,
+        "FYKey", IF ( MONTH ( [Date] ) >= 4, YEAR ( [Date] ), YEAR ( [Date] ) - 1 ),
+        "FY",
+            VAR y = IF ( MONTH ( [Date] ) >= 4, YEAR ( [Date] ), YEAR ( [Date] ) - 1 )
+            RETURN y & "-" & RIGHT ( y + 1, 2 )
+    )
+
+GST (Cr) =
+SUM ( gst[amount_cr] )
+
+GST (Lakh Cr) =
+DIVIDE ( [GST (Cr)], 100000 )
+
+Share of India =
+DIVIDE ( [GST (Cr)], CALCULATE ( [GST (Cr)], REMOVEFILTERS ( states ) ) )
+
+GST LY (Cr) =
+CALCULATE ( [GST (Cr)], SAMEPERIODLASTYEAR ( 'Calendar'[Date] ) )
+
+YoY % =
+VAR months = CALCULATE ( DISTINCTCOUNT ( gst[month] ), REMOVEFILTERS ( tax_heads ) )
+VAR monthsLY = CALCULATE ( DISTINCTCOUNT ( gst[month] ), REMOVEFILTERS ( tax_heads ), SAMEPERIODLASTYEAR ( 'Calendar'[Date] ) )
+RETURN
+    IF ( monthsLY < months || [GST LY (Cr)] < 0.01 * [GST (Cr)], BLANK (), DIVIDE ( [GST (Cr)] - [GST LY (Cr)], [GST LY (Cr)] ) )
+
+MoM % =
+VAR prev = CALCULATE ( [GST (Cr)], DATEADD ( 'Calendar'[Date], -1, MONTH ) )
+RETURN
+    DIVIDE ( [GST (Cr)] - prev, prev )
+
+FYTD (Cr) =
+TOTALYTD ( [GST (Cr)], 'Calendar'[Date], "3/31" )
+
+FYTD YoY % =
+VAR ly = CALCULATE ( [FYTD (Cr)], SAMEPERIODLASTYEAR ( 'Calendar'[Date] ) )
+VAR months = CALCULATE ( DISTINCTCOUNT ( gst[month] ), REMOVEFILTERS ( tax_heads ), DATESYTD ( 'Calendar'[Date], "3/31" ) )
+VAR monthsLY =
+    CALCULATE (
+        CALCULATE ( DISTINCTCOUNT ( gst[month] ), REMOVEFILTERS ( tax_heads ), DATESYTD ( 'Calendar'[Date], "3/31" ) ),
+        SAMEPERIODLASTYEAR ( 'Calendar'[Date] )
+    )
+RETURN
+    IF ( monthsLY < months || ly < 0.01 * [FYTD (Cr)], BLANK (), DIVIDE ( [FYTD (Cr)] - ly, ly ) )
+
+Rolling 12M (Lakh Cr) =
+CALCULATE ( [GST (Lakh Cr)], DATESINPERIOD ( 'Calendar'[Date], MAX ( 'Calendar'[Date] ), -12, MONTH ) )
+
+3M Avg (Lakh Cr) =
+CALCULATE (
+    AVERAGEX ( VALUES ( 'Calendar'[MonthStart] ), [GST (Lakh Cr)] ),
+    DATESINPERIOD ( 'Calendar'[Date], MAX ( 'Calendar'[Date] ), -3, MONTH )
+)
+
+Monthly Avg (Cr) =
+AVERAGEX ( VALUES ( 'Calendar'[MonthStart] ), [GST (Cr)] )
+
+State Rank =
+IF ( ISINSCOPE ( states[state] ), RANKX ( ALLSELECTED ( states[state] ), [GST (Cr)] ) )
+
+Top 5 Share =
+DIVIDE (
+    SUMX ( TOPN ( 5, ALL ( states[state] ), [GST (Cr)] ), [GST (Cr)] ),
+    CALCULATE ( [GST (Cr)], REMOVEFILTERS ( states ) )
+)
+
+Growth vs FY 2018-19 =
+VAR base = CALCULATE ( [GST (Cr)], REMOVEFILTERS ( 'Calendar' ), 'Calendar'[FY] = "2018-19" )
+RETURN
+    DIVIDE ( [GST (Cr)] - base, base )
